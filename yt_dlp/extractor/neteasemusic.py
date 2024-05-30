@@ -1,7 +1,6 @@
 import hashlib
 import itertools
 import json
-import random
 import re
 import time
 
@@ -19,6 +18,7 @@ from ..utils import (
     urljoin,
     variadic,
 )
+import secrets
 
 
 class NetEaseMusicBaseIE(InfoExtractor):
@@ -53,7 +53,7 @@ class NetEaseMusicBaseIE(InfoExtractor):
             '__csrf': '',
             'os': 'pc',
             'channel': 'undefined',
-            'requestId': f'{int(time.time() * 1000)}_{random.randint(0, 1000):04}',
+            'requestId': f'{int(time.time() * 1000)}_{secrets.SystemRandom().randint(0, 1000):04}',
             **traverse_obj(self._get_cookies(self._API_BASE), {
                 'MUSIC_U': ('MUSIC_U', {lambda i: i.value}),
             })

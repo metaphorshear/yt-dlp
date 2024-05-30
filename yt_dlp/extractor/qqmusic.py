@@ -1,4 +1,3 @@
-import random
 import re
 import time
 
@@ -9,6 +8,7 @@ from ..utils import (
     strip_jsonp,
     unescapeHTML,
 )
+import secrets
 
 
 class QQMusicIE(InfoExtractor):
@@ -68,7 +68,7 @@ class QQMusicIE(InfoExtractor):
     @staticmethod
     def m_r_get_ruin():
         curMs = int(time.time() * 1000) % 1000
-        return int(round(random.random() * 2147483647) * curMs % 1E10)
+        return int(round(secrets.SystemRandom().random() * 2147483647) * curMs % 1E10)
 
     def _real_extract(self, url):
         mid = self._match_id(url)

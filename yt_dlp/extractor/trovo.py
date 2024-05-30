@@ -1,6 +1,5 @@
 import itertools
 import json
-import random
 import string
 
 from .common import InfoExtractor
@@ -12,6 +11,7 @@ from ..utils import (
     traverse_obj,
     try_get,
 )
+import secrets
 
 
 class TrovoBaseIE(InfoExtractor):
@@ -27,7 +27,7 @@ class TrovoBaseIE(InfoExtractor):
         resp = self._download_json(
             url, video_id, data=json.dumps([data]).encode(), headers={'Accept': 'application/json'},
             query={
-                'qid': ''.join(random.choices(string.ascii_uppercase + string.digits, k=16)),
+                'qid': ''.join(secrets.SystemRandom().choices(string.ascii_uppercase + string.digits, k=16)),
             })[0]
         if 'errors' in resp:
             raise ExtractorError(f'Trovo said: {resp["errors"][0]["message"]}')

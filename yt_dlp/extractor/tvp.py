@@ -1,5 +1,4 @@
 import itertools
-import random
 import re
 
 from .common import InfoExtractor
@@ -16,6 +15,7 @@ from ..utils import (
     try_get,
     url_or_none,
 )
+import secrets
 
 
 class TVPIE(InfoExtractor):
@@ -369,7 +369,7 @@ class TVPEmbedIE(InfoExtractor):
         video_id = self._match_id(url)
 
         # it could be anything that is a valid JS function name
-        callback = random.choice((
+        callback = secrets.choice((
             'jebac_pis',
             'jebacpis',
             'ziobro',

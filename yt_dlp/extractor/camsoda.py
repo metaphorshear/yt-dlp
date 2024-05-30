@@ -1,7 +1,7 @@
-import random
 
 from .common import InfoExtractor
 from ..utils import ExtractorError, traverse_obj
+import secrets
 
 
 class CamsodaIE(InfoExtractor):
@@ -25,7 +25,7 @@ class CamsodaIE(InfoExtractor):
 
         data = self._download_json(
             f'https://camsoda.com/api/v1/video/vtoken/{video_id}', video_id,
-            query={'username': f'guest_{random.randrange(10000, 99999)}'},
+            query={'username': f'guest_{secrets.SystemRandom().randrange(10000, 99999)}'},
             headers=self.geo_verification_headers())
         if not data:
             raise ExtractorError('Unable to find configuration for stream.')

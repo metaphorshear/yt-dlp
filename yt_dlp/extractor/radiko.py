@@ -1,5 +1,4 @@
 import base64
-import random
 import re
 import urllib.parse
 
@@ -13,6 +12,7 @@ from ..utils import (
     update_url_query,
 )
 from ..utils.traversal import traverse_obj
+import secrets
 
 
 class RadikoBaseIE(InfoExtractor):
@@ -135,7 +135,7 @@ class RadikoBaseIE(InfoExtractor):
                 'station_id': station,
                 **query,
                 'l': '15',
-                'lsid': ''.join(random.choices('0123456789abcdef', k=32)),
+                'lsid': ''.join(secrets.SystemRandom().choices('0123456789abcdef', k=32)),
                 'type': 'b',
             })
 

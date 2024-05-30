@@ -24,7 +24,6 @@ import netrc
 import operator
 import os
 import platform
-import random
 import re
 import shlex
 import socket
@@ -52,6 +51,7 @@ from ..compat import (
     compat_os_name,
 )
 from ..dependencies import xattr
+import secrets
 
 __name__ = __name__.rsplit('.', 1)[0]  # Pretend to be the parent module
 
@@ -2595,7 +2595,7 @@ def multipart_encode(data, boundary=None):
 
     while True:
         if boundary is None:
-            boundary = '---------------' + str(random.randrange(0x0fffffff, 0xffffffff))
+            boundary = '---------------' + str(secrets.SystemRandom().randrange(0x0fffffff, 0xffffffff))
 
         try:
             out, content_type = _multipart_encode_impl(data, boundary)
@@ -4291,7 +4291,7 @@ class GeoUtils:
         addr_min = struct.unpack('!L', socket.inet_aton(addr))[0]
         addr_max = addr_min | (0xffffffff >> int(preflen))
         return str(socket.inet_ntoa(
-            struct.pack('!L', random.randint(addr_min, addr_max))))
+            struct.pack('!L', secrets.SystemRandom().randint(addr_min, addr_max))))
 
 
 # Both long_to_bytes and bytes_to_long are adapted from PyCrypto, which is
@@ -4373,7 +4373,7 @@ def pkcs1pad(data, length):
     if len(data) > length - 11:
         raise ValueError('Input data too long for PKCS#1 padding')
 
-    pseudo_random = [random.randint(0, 254) for _ in range(length - len(data) - 3)]
+    pseudo_random = [secrets.SystemRandom().randint(0, 254) for _ in range(length - len(data) - 3)]
     return [0, 2] + pseudo_random + [0] + data
 
 
@@ -4509,7 +4509,7 @@ def write_xattr(path, key, value):
 def random_birthday(year_field, month_field, day_field):
     start_date = dt.date(1950, 1, 1)
     end_date = dt.date(1995, 12, 31)
-    offset = random.randint(0, (end_date - start_date).days)
+    offset = secrets.SystemRandom().randint(0, (end_date - start_date).days)
     random_date = start_date + dt.timedelta(offset)
     return {
         year_field: str(random_date.year),
@@ -4645,7 +4645,7 @@ _HEX_TABLE = '0123456789abcdef'
 
 
 def random_uuidv4():
-    return re.sub(r'[xy]', lambda x: _HEX_TABLE[random.randint(0, 15)], 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx')
+    return re.sub(r'[xy]', lambda x: _HEX_TABLE[secrets.SystemRandom().randint(0, 15)], 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx')
 
 
 def make_dir(path, to_screen=None):

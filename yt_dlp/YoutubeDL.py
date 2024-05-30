@@ -11,7 +11,6 @@ import json
 import locale
 import operator
 import os
-import random
 import re
 import shutil
 import string
@@ -167,6 +166,7 @@ from .utils.networking import (
     std_headers,
 )
 from .version import CHANNEL, ORIGIN, RELEASE_GIT_HEAD, VARIANT, __version__
+import secrets
 
 if compat_os_name == 'nt':
     import ctypes
@@ -1136,7 +1136,7 @@ class YoutubeDL:
         # correspondingly that is not what we want since we need to keep
         # '%%' intact for template dict substitution step. Working around
         # with boundary-alike separator hack.
-        sep = ''.join(random.choices(string.ascii_letters, k=32))
+        sep = ''.join(secrets.SystemRandom().choices(string.ascii_letters, k=32))
         outtmpl = outtmpl.replace('%%', f'%{sep}%').replace('$$', f'${sep}$')
 
         # outtmpl should be expand_path'ed before template dict substitution
@@ -1652,7 +1652,7 @@ class YoutubeDL:
         min_wait, max_wait = self.params.get('wait_for_video')
         diff = try_get(ie_result, lambda x: x['release_timestamp'] - time.time())
         if diff is None and ie_result.get('live_status') == 'is_upcoming':
-            diff = round(random.uniform(min_wait, max_wait) if (max_wait and min_wait) else (max_wait or min_wait), 0)
+            diff = round(secrets.SystemRandom().uniform(min_wait, max_wait) if (max_wait and min_wait) else (max_wait or min_wait), 0)
             self.report_warning('Release time of video is not known')
         elif ie_result and (diff or 0) <= 0:
             self.report_warning('Video should already be available according to extracted info')
@@ -1994,7 +1994,7 @@ class YoutubeDL:
         elif self.params.get('playlistreverse'):
             entries.reverse()
         elif self.params.get('playlistrandom'):
-            random.shuffle(entries)
+            secrets.SystemRandom().shuffle(entries)
 
         self.to_screen(f'[{ie_result["extractor"]}] Playlist {title}: Downloading {n_entries} items'
                        f'{format_field(ie_result, "playlist_count", " of %s")}')
@@ -2494,7 +2494,7 @@ class YoutubeDL:
         #       Prefix numbers with random letters to avoid it being classified as a number
         #       See: https://github.com/yt-dlp/yt-dlp/pulls/8797
         # TODO: Implement parser not reliant on tokenize.tokenize
-        prefix = ''.join(random.choices(string.ascii_letters, k=32))
+        prefix = ''.join(secrets.SystemRandom().choices(string.ascii_letters, k=32))
         stream = io.BytesIO(re.sub(r'\d[_\d]*', rf'{prefix}\g<0>', format_spec).encode())
         try:
             tokens = list(_remove_unused_ops(
