@@ -52,6 +52,7 @@ from ..compat import (
     compat_os_name,
 )
 from ..dependencies import xattr
+import defusedxml.ElementTree
 
 __name__ = __name__.rsplit('.', 1)[0]  # Pretend to be the parent module
 
@@ -3451,7 +3452,7 @@ def dfxp2srt(dfxp_data):
 
     def parse_node(node):
         target = TTMLPElementParser()
-        parser = xml.etree.ElementTree.XMLParser(target=target)
+        parser = defusedxml.ElementTree.XMLParser(target=target)
         parser.feed(xml.etree.ElementTree.tostring(node))
         return parser.close()
 

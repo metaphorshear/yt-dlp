@@ -3,6 +3,7 @@ import sys
 import xml.etree.ElementTree as etree
 
 from .compat_utils import passthrough_module
+import defusedxml.ElementTree
 
 passthrough_module(__name__, '._deprecated')
 del passthrough_module
@@ -21,7 +22,7 @@ class _TreeBuilder(etree.TreeBuilder):
 
 
 def compat_etree_fromstring(text):
-    return etree.XML(text, parser=etree.XMLParser(target=_TreeBuilder()))
+    return etree.XML(text, parser=defusedxml.ElementTree.XMLParser(target=_TreeBuilder()))
 
 
 compat_os_name = os._name if os.name == 'java' else os.name
