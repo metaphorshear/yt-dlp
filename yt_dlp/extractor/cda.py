@@ -4,7 +4,6 @@ import datetime as dt
 import hashlib
 import hmac
 import json
-import random
 import re
 
 from .common import InfoExtractor
@@ -22,6 +21,7 @@ from ..utils import (
     try_get,
     urljoin,
 )
+import secrets
 
 
 class CDAIE(InfoExtractor):
@@ -101,12 +101,12 @@ class CDAIE(InfoExtractor):
             }, **kwargs)
 
     def _perform_login(self, username, password):
-        app_version = random.choice((
+        app_version = secrets.choice((
             '1.2.88 build 15306',
             '1.2.174 build 18469',
         ))
-        android_version = random.randrange(8, 14)
-        phone_model = random.choice((
+        android_version = secrets.SystemRandom().randrange(8, 14)
+        phone_model = secrets.choice((
             # x-kom.pl top selling Android smartphones, as of 2022-12-26
             # https://www.x-kom.pl/g-4/c/1590-smartfony-i-telefony.html?f201-system-operacyjny=61322-android
             'ASUS ZenFone 8',

@@ -5,8 +5,8 @@ from ..utils import (
 )
 
 import json
-import random
 import re
+import secrets
 
 
 class WPPilotBaseIE(InfoExtractor):
@@ -135,7 +135,7 @@ class WPPilotIE(WPPilotBaseIE):
             if fmt['type'] == 'hls@live:abr':
                 formats.extend(
                     self._extract_m3u8_formats(
-                        random.choice(fmt['url']),
+                        secrets.choice(fmt['url']),
                         video_id, live=True))
 
         channel['formats'] = formats

@@ -1,10 +1,10 @@
-import random
 import string
 
 from .discoverygo import DiscoveryGoBaseIE
 from ..compat import compat_urllib_parse_unquote
 from ..networking.exceptions import HTTPError
 from ..utils import ExtractorError
+import secrets
 
 
 class DiscoveryIE(DiscoveryGoBaseIE):
@@ -78,7 +78,7 @@ class DiscoveryIE(DiscoveryGoBaseIE):
                 'Downloading token JSON metadata', query={
                     'authRel': 'authorization',
                     'client_id': '3020a40c2356a645b4b4',
-                    'nonce': ''.join(random.choices(string.ascii_letters, k=32)),
+                    'nonce': ''.join(secrets.SystemRandom().choices(string.ascii_letters, k=32)),
                     'redirectUri': 'https://www.discovery.com/',
                 })['access_token']
 

@@ -2,7 +2,6 @@ import datetime as dt
 import itertools
 import json
 import math
-import random
 import time
 import uuid
 
@@ -15,6 +14,7 @@ from ..utils import (
     try_call,
 )
 from ..utils.traversal import traverse_obj
+import secrets
 
 
 class SonyLIVIE(InfoExtractor):
@@ -68,7 +68,7 @@ class SonyLIVIE(InfoExtractor):
         e = int(time.time() * 1000)
         t = list('xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx')
         for i, c in enumerate(t):
-            n = int((e + 16 * random.random()) % 16) | 0
+            n = int((e + 16 * secrets.SystemRandom().random()) % 16) | 0
             e = math.floor(e / 16)
             if c == 'x':
                 t[i] = str(n)
