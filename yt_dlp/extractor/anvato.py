@@ -1,7 +1,6 @@
 import base64
 import hashlib
 import json
-import random
 import re
 import time
 
@@ -19,6 +18,7 @@ from ..utils import (
     unescapeHTML,
     unsmuggle_url,
 )
+import secrets
 
 
 def md5_text(s):
@@ -283,7 +283,7 @@ class AnvatoIE(InfoExtractor):
             'X-Anvato-Adst-Auth': base64.b64encode(auth_secret).decode('ascii'),
             'rtyp': 'fp',
         }
-        anvrid = md5_text(time.time() * 1000 * random.random())[:30]
+        anvrid = md5_text(time.time() * 1000 * secrets.SystemRandom().random())[:30]
         api = {
             'anvrid': anvrid,
             'anvts': server_time,

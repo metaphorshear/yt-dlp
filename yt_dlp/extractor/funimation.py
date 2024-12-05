@@ -1,4 +1,3 @@
-import random
 import re
 import string
 
@@ -18,6 +17,7 @@ from ..utils import (
     try_get,
     urlencode_postdata,
 )
+import secrets
 
 
 class FunimationBaseIE(InfoExtractor):
@@ -210,7 +210,7 @@ class FunimationIE(FunimationBaseIE):
             page = self._download_json(
                 'https://www.funimation.com/api/showexperience/%s/' % experience_id,
                 display_id, headers=headers, expected_status=403, query={
-                    'pinst_id': ''.join(random.choices(string.digits + string.ascii_letters, k=8)),
+                    'pinst_id': ''.join(secrets.SystemRandom().choices(string.digits + string.ascii_letters, k=8)),
                 }, note=f'Downloading {format_name} JSON')
             sources = page.get('items') or []
             if not sources:

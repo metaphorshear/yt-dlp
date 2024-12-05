@@ -1,10 +1,10 @@
 import time
-import random
 import string
 import hashlib
 import urllib.parse
 
 from .common import InfoExtractor
+import secrets
 
 
 class KankaNewsIE(InfoExtractor):
@@ -28,7 +28,7 @@ class KankaNewsIE(InfoExtractor):
         video_id = self._search_regex(r'omsid\s*=\s*"(\d+)"', webpage, 'video id')
 
         params = {
-            'nonce': ''.join(random.choices(string.ascii_lowercase + string.digits, k=8)),
+            'nonce': ''.join(secrets.SystemRandom().choices(string.ascii_lowercase + string.digits, k=8)),
             'omsid': video_id,
             'platform': 'pc',
             'timestamp': int(time.time()),

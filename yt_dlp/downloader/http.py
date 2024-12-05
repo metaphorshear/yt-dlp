@@ -1,5 +1,4 @@
 import os
-import random
 import time
 
 from .common import FileDownloader
@@ -22,6 +21,7 @@ from ..utils import (
     write_xattr,
 )
 from ..utils.networking import HTTPHeaderDict
+import secrets
 
 
 class HttpFD(FileDownloader):
@@ -75,7 +75,7 @@ class HttpFD(FileDownloader):
             pass
 
         def establish_connection():
-            ctx.chunk_size = (random.randint(int(chunk_size * 0.95), chunk_size)
+            ctx.chunk_size = (secrets.SystemRandom().randint(int(chunk_size * 0.95), chunk_size)
                               if not is_test and chunk_size else chunk_size)
             if ctx.resume_len > 0:
                 range_start = ctx.resume_len

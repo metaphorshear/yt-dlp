@@ -1,5 +1,4 @@
 import hashlib
-import random
 import re
 
 from ..compat import compat_urlparse, compat_b64decode
@@ -14,6 +13,7 @@ from ..utils import (
 )
 
 from .common import InfoExtractor
+import secrets
 
 
 class HuyaLiveIE(InfoExtractor):
@@ -112,7 +112,7 @@ class HuyaLiveIE(InfoExtractor):
         }
 
     def encrypt(self, params, stream_info, stream_name):
-        ct = int_or_none(params.get('wsTime'), 16) + random.random()
+        ct = int_or_none(params.get('wsTime'), 16) + secrets.SystemRandom().random()
         presenter_uid = stream_info['lPresenterUid']
         if not stream_name.startswith(str(presenter_uid)):
             uid = presenter_uid
