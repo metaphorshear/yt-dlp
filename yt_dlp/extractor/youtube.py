@@ -9,7 +9,6 @@ import itertools
 import json
 import math
 import os.path
-import random
 import re
 import shlex
 import sys
@@ -67,6 +66,7 @@ from ..utils import (
     urljoin,
     variadic,
 )
+import secrets
 
 STREAMING_DATA_CLIENT_NAME = '__yt_dlp_client'
 # any clients starting with _ cannot be explicitly requested by the user
@@ -3211,7 +3211,7 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
             # cpn generation algorithm is reverse engineered from base.js.
             # In fact it works even with dummy cpn.
             CPN_ALPHABET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_'
-            cpn = ''.join(CPN_ALPHABET[random.randint(0, 256) & 63] for _ in range(0, 16))
+            cpn = ''.join(CPN_ALPHABET[secrets.SystemRandom().randint(0, 256) & 63] for _ in range(0, 16))
 
             # # more consistent results setting it to right before the end
             video_length = [str(float((qs.get('len') or ['1.5'])[0]) - 1)]

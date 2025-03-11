@@ -7,7 +7,7 @@ from ..utils import (
     determine_ext,
 )
 import re
-import random
+import secrets
 
 
 class NitterIE(InfoExtractor):
@@ -189,7 +189,7 @@ class NitterIE(InfoExtractor):
 
     _INSTANCES_RE = f'(?:{"|".join(map(re.escape, INSTANCES))})'
     _VALID_URL = fr'https?://{_INSTANCES_RE}/(?P<uploader_id>.+)/status/(?P<id>[0-9]+)(#.)?'
-    current_instance = random.choice(HTTP_INSTANCES)
+    current_instance = secrets.choice(HTTP_INSTANCES)
 
     _TESTS = [
         {

@@ -2,7 +2,6 @@ import base64
 import binascii
 import json
 import os
-import random
 import time
 
 from .common import InfoExtractor
@@ -27,6 +26,7 @@ from ..utils import (
     urlencode_postdata,
 )
 from ..utils.traversal import traverse_obj
+import secrets
 
 
 class ADNBaseIE(InfoExtractor):
@@ -199,7 +199,7 @@ Format: Marked,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text'''
             }, data=b'')['token']
 
         links_url = try_get(options, lambda x: x['video']['url']) or (video_base_url + 'link')
-        self._K = ''.join(random.choices('0123456789abcdef', k=16))
+        self._K = ''.join(secrets.SystemRandom().choices('0123456789abcdef', k=16))
         message = bytes_to_intlist(json.dumps({
             'k': self._K,
             't': token,

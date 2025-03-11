@@ -1,5 +1,4 @@
 import json
-import random
 import itertools
 import urllib.parse
 
@@ -16,6 +15,7 @@ from ..utils import (
     urlencode_postdata,
     urljoin,
 )
+import secrets
 
 
 class WeiboBaseIE(InfoExtractor):
@@ -48,7 +48,7 @@ class WeiboBaseIE(InfoExtractor):
                 'gc': '',
                 'cb': 'cross_domain',
                 'from': 'weibo',
-                '_rand': random.random(),
+                '_rand': secrets.SystemRandom().random(),
             })
 
     def _weibo_download_json(self, url, video_id, *args, fatal=True, note='Downloading JSON metadata', **kwargs):

@@ -1,9 +1,9 @@
 import collections
-import random
 import urllib.parse
 import urllib.request
 
 from ._utils import remove_start
+import secrets
 
 
 def random_user_agent():
@@ -48,7 +48,7 @@ def random_user_agent():
         '96.0.4664.93',
         '97.0.4692.20',
     )
-    return _USER_AGENT_TPL % random.choice(_CHROME_VERSIONS)
+    return _USER_AGENT_TPL % secrets.choice(_CHROME_VERSIONS)
 
 
 class HTTPHeaderDict(collections.UserDict, dict):

@@ -1,6 +1,5 @@
 import itertools
 import json
-import random
 import re
 import string
 import time
@@ -28,6 +27,7 @@ from ..utils import (
     try_get,
     url_or_none,
 )
+import secrets
 
 
 class TikTokBaseIE(InfoExtractor):
@@ -68,7 +68,7 @@ class TikTokBaseIE(InfoExtractor):
             }
             app_info_list = (
                 self._configuration_arg('app_info', ie_key=TikTokIE)
-                or random.sample(self._KNOWN_APP_INFO, len(self._KNOWN_APP_INFO)))
+                or secrets.SystemRandom().sample(self._KNOWN_APP_INFO, len(self._KNOWN_APP_INFO)))
             self._APP_INFO_POOL = [
                 {**defaults, **dict(
                     (k, v) for k, v in zip(self._APP_INFO_DEFAULTS, app_info.split('/')) if v
@@ -107,7 +107,7 @@ class TikTokBaseIE(InfoExtractor):
 
     def _call_api_impl(self, ep, query, video_id, fatal=True,
                        note='Downloading API JSON', errnote='Unable to download API page'):
-        self._set_cookie(self._API_HOSTNAME, 'odin_tt', ''.join(random.choices('0123456789abcdef', k=160)))
+        self._set_cookie(self._API_HOSTNAME, 'odin_tt', ''.join(secrets.SystemRandom().choices('0123456789abcdef', k=160)))
         webpage_cookies = self._get_cookies(self._WEBPAGE_HOST)
         if webpage_cookies.get('sid_tt'):
             self._set_cookie(self._API_HOSTNAME, 'sid_tt', webpage_cookies['sid_tt'].value)
@@ -146,7 +146,7 @@ class TikTokBaseIE(InfoExtractor):
             'current_region': 'US',
             'app_type': 'normal',
             'sys_region': 'US',
-            'last_install_time': int(time.time()) - random.randint(86400, 1123200),
+            'last_install_time': int(time.time()) - secrets.SystemRandom().randint(86400, 1123200),
             'timezone_name': 'America/New_York',
             'residence': 'US',
             'app_language': 'en',
@@ -161,8 +161,8 @@ class TikTokBaseIE(InfoExtractor):
             'region': 'US',
             'ts': int(time.time()),
             'iid': self._APP_INFO['iid'],
-            'device_id': random.randint(7250000000000000000, 7351147085025500000),
-            'openudid': ''.join(random.choices('0123456789abcdef', k=16)),
+            'device_id': secrets.SystemRandom().randint(7250000000000000000, 7351147085025500000),
+            'openudid': ''.join(secrets.SystemRandom().choices('0123456789abcdef', k=16)),
         }
 
     def _call_api(self, ep, query, video_id, fatal=True,
@@ -850,7 +850,7 @@ class TikTokUserIE(TikTokBaseIE):
             'max_cursor': 0,
             'min_cursor': 0,
             'retry_type': 'no_retry',
-            'device_id': ''.join(random.choices(string.digits, k=19)),  # Some endpoints don't like randomized device_id, so it isn't directly set in _call_api.
+            'device_id': ''.join(secrets.SystemRandom().choices(string.digits, k=19)),  # Some endpoints don't like randomized device_id, so it isn't directly set in _call_api.
         }
 
         for page in itertools.count(1):
@@ -898,7 +898,7 @@ class TikTokBaseListIE(TikTokBaseIE):  # XXX: Conventionally, base classes shoul
             'cursor': 0,
             'count': 20,
             'type': 5,
-            'device_id': ''.join(random.choices(string.digits, k=19))
+            'device_id': ''.join(secrets.SystemRandom().choices(string.digits, k=19))
         }
 
         for page in itertools.count(1):

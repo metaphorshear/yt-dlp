@@ -1,8 +1,8 @@
-import random
 
 from .common import InfoExtractor
 from ..compat import compat_str, compat_urllib_parse_unquote
 from ..utils import ExtractorError, str_or_none, try_get
+import secrets
 
 
 class AudiusBaseIE(InfoExtractor):
@@ -27,7 +27,7 @@ class AudiusBaseIE(InfoExtractor):
             errnote='Unable to request available API hosts')
         hosts = self._get_response_data(response)
         if isinstance(hosts, list):
-            self._API_BASE = random.choice(hosts)
+            self._API_BASE = secrets.choice(hosts)
             return
         raise ExtractorError('Unable to get available API hosts')
 
