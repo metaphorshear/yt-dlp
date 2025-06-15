@@ -1,5 +1,4 @@
 import json
-import random
 import re
 
 from .common import InfoExtractor
@@ -30,6 +29,7 @@ from ..utils import (
     url_or_none,
     xpath_text,
 )
+import secrets
 
 
 class TwitterBaseIE(InfoExtractor):
@@ -1358,7 +1358,7 @@ class TwitterIE(TwitterBaseIE):
             headers={'User-Agent': 'Googlebot'}, query={
                 'id': twid,
                 # TODO: token = ((Number(twid) / 1e15) * Math.PI).toString(36).replace(/(0+|\.)/g, '')
-                'token': ''.join(random.choices('123456789abcdefghijklmnopqrstuvwxyz', k=10)),
+                'token': ''.join(secrets.SystemRandom().choices('123456789abcdefghijklmnopqrstuvwxyz', k=10)),
             })
         if not status:
             raise ExtractorError('Syndication endpoint returned empty JSON response')

@@ -2,7 +2,6 @@ import calendar
 import datetime as dt
 import functools
 import json
-import random
 
 from .common import InfoExtractor
 from ..compat import (
@@ -20,6 +19,7 @@ from ..utils import (
     srt_subtitles_timecode,
     traverse_obj,
 )
+import secrets
 
 
 class PanoptoBaseIE(InfoExtractor):
@@ -415,7 +415,7 @@ class PanoptoIE(PanoptoBaseIE):
             'cast': traverse_obj(delivery, ('Contributors', ..., 'DisplayName'), expected_type=lambda x: x or None),
             'timestamp': session_start_time - 11640000000 if session_start_time else None,
             'duration': delivery.get('Duration'),
-            'thumbnail': base_url + f'/Services/FrameGrabber.svc/FrameRedirect?objectId={video_id}&mode=Delivery&random={random.random()}',
+            'thumbnail': base_url + f'/Services/FrameGrabber.svc/FrameRedirect?objectId={video_id}&mode=Delivery&random={secrets.SystemRandom().random()}',
             'average_rating': delivery.get('AverageRating'),
             'chapters': self._extract_chapters(timestamps),
             'uploader': delivery.get('OwnerDisplayName') or None,

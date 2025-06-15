@@ -1,5 +1,4 @@
 import json
-import random
 import time
 
 from .common import InfoExtractor
@@ -11,6 +10,7 @@ from ..utils import (
     traverse_obj,
     try_get
 )
+import secrets
 
 
 class RCTIPlusBaseIE(InfoExtractor):
@@ -144,7 +144,7 @@ class RCTIPlusIE(RCTIPlusBaseIE):
         video_type, video_id, display_id = match['type'], match['id'], match['display_id']
 
         url_api_version = 'v2' if video_type == 'missed-event' else 'v1'
-        appier_id = '23984824_' + str(random.randint(0, 10000000000))  # Based on the webpage's uuidRandom generator
+        appier_id = '23984824_' + str(secrets.SystemRandom().randint(0, 10000000000))  # Based on the webpage's uuidRandom generator
         video_json = self._call_api(
             f'https://api.rctiplus.com/api/{url_api_version}/{video_type}/{video_id}/url?appierid={appier_id}', display_id, 'Downloading video URL JSON')[0]
         video_url = video_json['url']

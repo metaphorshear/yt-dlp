@@ -1,4 +1,3 @@
-import random
 import re
 import string
 import time
@@ -12,6 +11,7 @@ from ..utils import (
     str_or_none,
     strip_jsonp,
 )
+import secrets
 
 
 class YoukuIE(InfoExtractor):
@@ -105,7 +105,7 @@ class YoukuIE(InfoExtractor):
     @staticmethod
     def get_ysuid():
         return '%d%s' % (int(time.time()), ''.join(
-            random.choices(string.ascii_letters, k=3)))
+            secrets.SystemRandom().choices(string.ascii_letters, k=3)))
 
     def get_format_name(self, fm):
         _dict = {

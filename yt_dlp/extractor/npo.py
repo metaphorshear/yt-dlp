@@ -1,4 +1,3 @@
-import random
 import re
 import urllib.parse
 
@@ -14,6 +13,7 @@ from ..utils import (
     url_or_none,
     urlencode_postdata,
 )
+import secrets
 
 
 class NPOIE(InfoExtractor):
@@ -208,7 +208,7 @@ class NPOIE(InfoExtractor):
             player = self._download_json(
                 f'https://www.ntr.nl/ajax/player/embed/{video_id}', video_id,
                 'Downloading player JSON', query={
-                    'parameters[elementId]': f'npo{random.randint(0, 999)}',
+                    'parameters[elementId]': f'npo{secrets.SystemRandom().randint(0, 999)}',
                     'parameters[sterReferralUrl]': url,
                     'parameters[autoplay]': 0,
                 })

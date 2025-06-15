@@ -1,7 +1,6 @@
 import base64
 import hashlib
 import json
-import random
 import re
 
 from .common import InfoExtractor
@@ -16,6 +15,7 @@ from ..utils import (
     str_or_none,
     try_get,
 )
+import secrets
 
 
 class GloboIE(InfoExtractor):
@@ -117,7 +117,7 @@ class GloboIE(InfoExtractor):
                     '%s returned error: %s' % (self.IE_NAME, message), expected=True)
 
         hash_code = security_hash[:2]
-        padding = '%010d' % random.randint(1, 10000000000)
+        padding = '%010d' % secrets.SystemRandom().randint(1, 10000000000)
         if hash_code in ('04', '14'):
             received_time = security_hash[3:13]
             received_md5 = security_hash[24:]

@@ -11,7 +11,6 @@ import json
 import math
 import netrc
 import os
-import random
 import re
 import subprocess
 import sys
@@ -100,6 +99,7 @@ from ..utils import (
     xpath_text,
     xpath_with_ns,
 )
+import secrets
 
 
 class InfoExtractor:
@@ -698,7 +698,7 @@ class InfoExtractor:
             if not ip_block:
                 ip_blocks = geo_bypass_context.get('ip_blocks')
                 if self._GEO_BYPASS and ip_blocks:
-                    ip_block = random.choice(ip_blocks)
+                    ip_block = secrets.choice(ip_blocks)
 
             if ip_block:
                 self._x_forwarded_for_ip = GeoUtils.random_ipv4(ip_block)
@@ -716,7 +716,7 @@ class InfoExtractor:
             if not country:
                 countries = geo_bypass_context.get('countries')
                 if self._GEO_BYPASS and countries:
-                    country = random.choice(countries)
+                    country = secrets.choice(countries)
 
             if country:
                 self._x_forwarded_for_ip = GeoUtils.random_ipv4(country)
@@ -763,7 +763,7 @@ class InfoExtractor:
                 and self.get_param('geo_bypass', True)
                 and not self._x_forwarded_for_ip
                 and countries):
-            country_code = random.choice(countries)
+            country_code = secrets.choice(countries)
             self._x_forwarded_for_ip = GeoUtils.random_ipv4(country_code)
             if self._x_forwarded_for_ip:
                 self.report_warning(
@@ -3672,7 +3672,7 @@ class InfoExtractor:
             desc += f'{";" if cls.IE_DESC else ""} "{cls.SEARCH_KEY}:" prefix'
             if search_examples:
                 _COUNTS = ('', '5', '10', 'all')
-                desc += f' (e.g. "{cls.SEARCH_KEY}{random.choice(_COUNTS)}:{random.choice(search_examples)}")'
+                desc += f' (e.g. "{cls.SEARCH_KEY}{secrets.choice(_COUNTS)}:{secrets.choice(search_examples)}")'
         if not cls.working():
             desc += ' (**Currently broken**)' if markdown else ' (Currently broken)'
 

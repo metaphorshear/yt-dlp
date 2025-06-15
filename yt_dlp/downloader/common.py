@@ -2,7 +2,6 @@ import contextlib
 import errno
 import functools
 import os
-import random
 import re
 import threading
 import time
@@ -33,6 +32,7 @@ from ..utils import (
     timetuple_from_msec,
     try_call,
 )
+import secrets
 
 
 class FileDownloader:
@@ -457,8 +457,7 @@ class FileDownloader:
             sleep_interval = self.params.get('sleep_interval_subtitles') or 0
         else:
             min_sleep_interval = self.params.get('sleep_interval') or 0
-            sleep_interval = random.uniform(
-                min_sleep_interval, self.params.get('max_sleep_interval') or min_sleep_interval)
+            sleep_interval = secrets.SystemRandom().uniform(min_sleep_interval, self.params.get('max_sleep_interval') or min_sleep_interval)
         if sleep_interval > 0:
             self.to_screen(f'[download] Sleeping {sleep_interval:.2f} seconds ...')
             time.sleep(sleep_interval)

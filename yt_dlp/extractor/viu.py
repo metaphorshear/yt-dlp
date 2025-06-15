@@ -1,7 +1,6 @@
 import re
 import json
 import uuid
-import random
 import urllib.parse
 
 from .common import InfoExtractor
@@ -18,6 +17,7 @@ from ..utils import (
     unsmuggle_url,
     url_or_none,
 )
+import secrets
 
 
 class ViuBaseIE(InfoExtractor):
@@ -254,7 +254,7 @@ class ViuOTTIE(InfoExtractor):
         return self._user_token
 
     def _get_token(self, country_code, video_id):
-        rand = ''.join(random.choices('0123456789', k=10))
+        rand = ''.join(secrets.SystemRandom().choices('0123456789', k=10))
         return self._download_json(
             f'https://api-gateway-global.viu.com/api/auth/token?v={rand}000', video_id,
             headers={'Content-Type': 'application/json'}, note='Getting bearer token',
