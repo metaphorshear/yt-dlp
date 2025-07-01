@@ -3,6 +3,7 @@
 # Allow execution from anywhere
 import os
 import sys
+from security import safe_command
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +26,7 @@ elif 'build_lazy_extractors' in sys.argv:
 
     os.chdir(sys.path[0])
     print('running build_lazy_extractors')
-    subprocess.run([sys.executable, 'devscripts/make_lazy_extractors.py'])
+    safe_command.run(subprocess.run, [sys.executable, 'devscripts/make_lazy_extractors.py'])
 
 else:
 
